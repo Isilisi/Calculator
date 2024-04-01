@@ -11,4 +11,13 @@ public abstract class Operation
             return true;
         return Arity.Value == numArguments;
     }
+
+    public static Operation FromName(string operationName)
+    {
+        return operationName switch
+        {
+            "Plus" => new Addition(),
+            _ => throw new ArgumentException("Operation name not supported"),
+        };
+    }
 }

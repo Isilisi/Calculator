@@ -1,4 +1,5 @@
 using System.Xml;
+using Calculator.Core.Operations;
 
 namespace Calculator.Core;
 
@@ -18,6 +19,19 @@ public class XmlParser : IToExpressionParser<XmlDocument>
             var stringValue = expressionToParse.FirstChild.Value;
             var doubleValue = double.Parse(stringValue);
             return Expression.CreateSingleValued(doubleValue);
+        }
+        else if (expressionToParse.Name == "Operation")
+        {
+            var operationName = expressionToParse.Attributes["ID"].Value;
+            var operation = Operation.FromName(operationName);
+            var subexpressions = new List<Expression>();
+            foreach (XmlNode subexpressionToParse in expressionToParse.ChildNodes)
+            {
+                var subexpression = ParseExpression(subexpressionToParse);
+                subexpressions.Add(subexpression);
+            }
+
+            return Expression.CreateNested(subexpressions, operation);
         }
         else
         {
