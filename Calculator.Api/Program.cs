@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using System.Xml;
 using Calculator.Core;
 
@@ -21,6 +22,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/Maths/Operation/List", GetAllOperations);
 app.MapPost("/Maths/Evaluate/Xml", EvaluateXml);
+app.MapPost("/Maths/Evaluate/Json", EvaluateJson);
 
 app.Run();
 
@@ -57,6 +59,41 @@ static async Task<IResult> EvaluateXml(string xmlString = """
         xmlDocument.LoadXml(xmlString);
         var xmlParser = new XmlParser();
         var expression = xmlParser.Parse(xmlDocument);
+        var result = expression.Evaluate();
+        return TypedResults.Ok(result);
+    }
+    catch (Exception e)
+    {
+        return TypedResults.BadRequest("Invalid input format");
+    }
+}
+
+static async Task<IResult> EvaluateJson(string jsonString = """
+                                                            {
+                                                              "Maths": {
+                                                                "Operation": {
+                                                                  "@ID": "Plus",
+                                                                  "Value": [
+                                                                    "2",
+                                                                    "3"
+                                                                  ],
+                                                                  "Operation": {
+                                                                    "@ID": "Multiplication",
+                                                                    "Value": [
+                                                                      "4",
+                                                                      "5"
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                            """)
+{
+    try
+    {
+        var jsonNode = JsonNode.Parse(jsonString);
+        var jsonParser = new JsonParser();
+        var expression = jsonParser.Parse(jsonNode);
         var result = expression.Evaluate();
         return TypedResults.Ok(result);
     }
