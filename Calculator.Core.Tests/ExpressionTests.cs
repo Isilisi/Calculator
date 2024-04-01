@@ -62,4 +62,15 @@ public class ExpressionTests
         // Assert
         result.Should().Be(expectedResult);
     }
+    
+    [Test]
+    public void SubtractionFailsOnThreeArguments()
+    {
+        // Arrange
+        List<double> values = new() { 4, 5, 1 };
+        var action = () => Expression.CreateMultiValued(values, new Subtraction());
+
+        // Assert
+        action.Should().Throw<ArgumentException>();
+    }
 }
