@@ -17,6 +17,9 @@ public abstract class Operation
         return operationName switch
         {
             "Plus" => new Addition(),
+            "Division" => new Division(),
+            "Multiplication" => new Multiplication(),
+            "Subtraction" => new Subtraction(),
             _ => throw new ArgumentException("Operation name not supported"),
         };
     }
