@@ -3,29 +3,31 @@
 namespace Calculator.Core;
 public class Expression
 {
-    private Operation _operation;
-    private List<double> _values;
+    private readonly Operation _operation;
+    private readonly List<Expression> _subexpressions;
 
-    private Expression(Operation operation, List<double> values)
+    private Expression(List<Expression> subexpressions, Operation operation)
     {
-        if (!operation.CanApplyToNumArguments(values.Count))
+        if (!operation.CanApplyToNumArguments(subexpressions.Count))
             throw new ArgumentException("Operation arity does not match the number of provided values");
         _operation = operation;
-        _values = values;
+        _subexpressions = subexpressions;
     }
 
     public static Expression CreateSingleValued(double value)
     {
-        return new Expression(new ConstantOperation(value), new());
+        return new Expression(new(),new ConstantOperation(value));
     }
 
     public static Expression CreateMultiValued(List<double> values, Operation operation)
     {
-        return new Expression(operation, values);
+        var subexpressions = values.Select(CreateSingleValued).ToList();
+        return new Expression(subexpressions, operation);
     }
 
     public double Evaluate()
     {
-        return _operation.Apply(_values);
+        var values = _subexpressions.Select(e => e.Evaluate()).ToList();
+        return _operation.Apply(values);
     }
 }
