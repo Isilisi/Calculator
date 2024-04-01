@@ -1,3 +1,6 @@
+using System.Xml;
+using Calculator.Core;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,6 +20,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGet("/Maths/Operation/List", GetAllOperations);
+app.MapPost("Maths/Evaluate/Xml", EvaluateXml);
 
 app.Run();
 
@@ -31,4 +35,21 @@ static async Task<IResult> GetAllOperations()
     };
     
     return TypedResults.Ok(operations);
+}
+
+static async Task<IResult> EvaluateXml(string xmlString)
+{
+    try
+    {
+        var xmlDocument = new XmlDocument();
+        xmlDocument.LoadXml(xmlString);
+        var xmlParser = new XmlParser();
+        var expression = xmlParser.Parse(xmlDocument);
+        var result = expression.Evaluate();
+        return TypedResults.Ok(result);
+    }
+    catch (Exception e)
+    {
+        return TypedResults.BadRequest("Invalid input format");
+    }
 }
