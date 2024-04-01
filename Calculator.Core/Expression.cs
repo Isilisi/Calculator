@@ -7,6 +7,8 @@ public class Expression
 
     private Expression(Operation operation, List<double> values)
     {
+        if (!operation.CanApplyToNumArguments(values.Count))
+            throw new ArgumentException("Operation arity does not match the number of provided values");
         _operation = operation;
         _values = values;
     }
