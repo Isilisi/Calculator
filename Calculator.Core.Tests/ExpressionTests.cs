@@ -73,4 +73,19 @@ public class ExpressionTests
         // Assert
         action.Should().Throw<ArgumentException>();
     }
+    
+    [Test]
+    public void Division()
+    {
+        // Arrange
+        List<double> values = new() { 4, 5 };
+        var expectedResult = 0.8;
+
+        // Act
+        var sut = Expression.CreateMultiValued(values, new Division());
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
 }
