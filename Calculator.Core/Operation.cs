@@ -18,3 +18,11 @@ public class ConstantOperation : Operation
         return _value;
     }
 }
+
+public class Addition : Operation
+{
+    public override double Apply(List<double> values)
+    {
+        return values.Sum();
+    }
+}

@@ -16,6 +16,11 @@ public class Expression
         return new Expression(new ConstantOperation(value), new());
     }
 
+    public static Expression CreateMultiValued(List<double> values, Operation operation)
+    {
+        return new Expression(operation, values);
+    }
+
     public double Evaluate()
     {
         return _operation.Apply(_values);
