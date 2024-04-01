@@ -5,7 +5,7 @@ namespace Calculator.Core.Tests;
 
 public class XmlParserTests
 {
-    private XmlParser _sut = new XmlParser();
+    private readonly XmlParser _sut = new();
     
     [Test]
     public void SingleValue()
