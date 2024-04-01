@@ -33,4 +33,39 @@ public class JsonParserTests
         // Assert
         result.Should().Be(expectedResult);
     }
+    
+    [Test]
+    public void Complex()
+    {
+        // Arrange
+        var jsonString = """
+                         {
+                           "Maths": {
+                             "Operation": {
+                               "@ID": "Plus",
+                               "Value": [
+                                 "2",
+                                 "3"
+                               ],
+                               "Operation": {
+                                 "@ID": "Multiplication",
+                                 "Value": [
+                                   "4",
+                                   "5"
+                                 ]
+                               }
+                             }
+                           }
+                         }
+                         """;
+        var jsonDocument = JsonNode.Parse(jsonString);
+        var expectedResult = 25;
+
+        // Act
+        var expression = _sut.Parse(jsonDocument);
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
 }
