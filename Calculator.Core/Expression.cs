@@ -25,6 +25,11 @@ public class Expression
         return new Expression(subexpressions, operation);
     }
 
+    public static Expression CreateNested(List<Expression> subexpressions, Operation operation)
+    {
+        return new Expression(subexpressions, operation);
+    }
+
     public double Evaluate()
     {
         var values = _subexpressions.Select(e => e.Evaluate()).ToList();

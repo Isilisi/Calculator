@@ -89,4 +89,24 @@ public class ExpressionTests
         // Assert
         result.Should().Be(expectedResult);
     }
+    
+    [Test]
+    public void Nested()
+    {
+        // Arrange
+        var sut = Expression.CreateNested(new List<Expression>()
+            {
+                Expression.CreateSingleValued(2),
+                Expression.CreateSingleValued(3),
+                Expression.CreateMultiValued(new List<double> {4, 5}, new Multiplication()),
+            },
+            new Addition());
+        var expectedResult = 25;
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
 }
