@@ -47,4 +47,19 @@ public class ExpressionTests
         // Assert
         result.Should().Be(expectedResult);
     }
+    
+    [Test]
+    public void Subtraction()
+    {
+        // Arrange
+        List<double> values = new() { 4, 5 };
+        var expectedResult = -1;
+
+        // Act
+        var sut = Expression.CreateMultiValued(values, new Subtraction());
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
 }
