@@ -20,7 +20,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGet("/Maths/Operation/List", GetAllOperations);
-app.MapPost("Maths/Evaluate/Xml", EvaluateXml);
+app.MapPost("/Maths/Evaluate/Xml", EvaluateXml);
 
 app.Run();
 
@@ -37,7 +37,19 @@ static async Task<IResult> GetAllOperations()
     return TypedResults.Ok(operations);
 }
 
-static async Task<IResult> EvaluateXml(string xmlString)
+static async Task<IResult> EvaluateXml(string xmlString = """
+                                                          <?xml version="1.0" encoding="UTF-8"?>
+                                                          <Maths>
+                                                              <Operation ID="Plus">
+                                                                  <Value>2</Value>
+                                                                  <Value>3</Value>
+                                                                  <Operation ID="Multiplication">
+                                                                      <Value>4</Value>
+                                                                      <Value>5</Value>
+                                                                  </Operation>
+                                                              </Operation>
+                                                          </Maths>
+                                                          """)
 {
     try
     {
