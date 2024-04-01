@@ -1,3 +1,4 @@
+using Calculator.Core.Operations;
 using FluentAssertions;
 
 namespace Calculator.Core.Tests;

@@ -1,5 +1,6 @@
-﻿namespace Calculator.Core;
+﻿using Calculator.Core.Operations;
 
+namespace Calculator.Core;
 public class Expression
 {
     private Operation _operation;
